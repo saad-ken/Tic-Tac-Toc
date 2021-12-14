@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Board from "./components/Board";
+import History from "./components/History";
 import { calculateWinner } from "./helpers";
 import './styles/root.scss'
 
@@ -10,14 +11,14 @@ function App() {
       {board:Array(9).fill(null) , isOnext:true}
     ])
     const [currentMove, setCurrentMove] = useState(0)
-    const current = history[currentMove]
-    const winner = calculateWinner(current.board)
+    const curr = history[currentMove]
+    const winner = calculateWinner(curr.board)
 
 
-    const message = winner ? `Winner is ${winner}` : `Next Player is ${current.isOnext ? 'X' : 'O'}`
+    const message = winner ? `Winner is ${winner}` : `Next Player is ${curr.isOnext ? 'X' : 'O'}`;
 
     const handleSquare = (position)=>{
-      if(current.board[position] || winner){
+      if(curr.board[position] || winner){
         return
       }
 
@@ -40,14 +41,18 @@ function App() {
 
     }
 
+    const moveTo =(move) =>{
+      setCurrentMove(move)
+    }
+
 
   return (
     <div className="app">
       <h1>Tic Tac Toe</h1>
       <h2>{message}</h2>
-      <Board board={current.board} handleSquare={handleSquare}/>
-      
-    </div>
+      <Board board={curr.board} handleSquare={handleSquare}/>
+      <History history = {history} moveTo={moveTo} currentMove={currentMove}/>
+    </div>  
   );
 }
 
